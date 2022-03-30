@@ -15,7 +15,7 @@ char *s;
 char *p;
 const char *help(){
   const char *h;
-  h = "AVAILABLE OPTIONS: \n-mf: move a file\n-cf: copy a file\n-rmf: remove a file\n-ssf: show size of file\n-saf: show all files in directory\n-sap: show all processes\n\nPROJECT DESCRIPTION: \nWorking with the file system\n\nEXAMPLES OF STARTING: \n./client *port*\n-cf from_file to_file";
+  h = "AVAILABLE OPTIONS: \n-mf: move a file\n-cf: copy a file\n-rmf: remove a file\n-ssf: show size of file\n-q: exit\n\nPROJECT DESCRIPTION: \nWorking with the file system\n\nEXAMPLES OF STARTING: \n./client \n-cf from_file to_file";
   return h;
 }
 

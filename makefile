@@ -25,4 +25,4 @@ main.o: main.cpp
 	g++ -c -fPIC main.cpp
 	
 clean:
-	rm -f *.o *.so server client
+	rm -f *.o *.so 

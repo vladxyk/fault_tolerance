@@ -90,12 +90,13 @@ const char *start(char* client_message){
         {
             char *size = new char;
             *size = showsize(argv[2]) + '0';
-            //char str[30] = "Size of file = ";
-            message = size;
+            char str[30] = "Size of file = ";
+            message = strcat(str, size);
+
             return message;
         }
         else if(strncmp(argv[1], "-q", 2)==0){
-            message = "-q";
+            message = "Do svidaniya! do widzenia!";
             return message;
         }
 

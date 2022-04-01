@@ -31,18 +31,18 @@ int main(int argc, char *argv[])
 	int *new_sock = new int;
 	int port = 8000;
 
-	// Create socket
-	socket_desc = socket(AF_INET, SOCK_STREAM, 0);
-	if (socket_desc == -1)
-	{
-		cout << "Could not create socket\n";
-		exit(EXIT_FAILURE);
-	}
 	while (1)
 	{
+		// Create socket
+		socket_desc = socket(AF_INET, SOCK_STREAM, 0);
+		if (socket_desc == -1)
+		{
+			cout << "Could not create socket\n";
+			exit(EXIT_FAILURE);
+		}
 		// Prepare the sockaddr_in structure
 		struct sockaddr_in server, client;
-		
+
 		server.sin_family = AF_INET;
 		server.sin_addr.s_addr = INADDR_ANY;
 		server.sin_port = htons(port);
@@ -50,10 +50,10 @@ int main(int argc, char *argv[])
 		// Bind
 		if (bind(socket_desc, (struct sockaddr *)&server, sizeof(server)) < 0)
 		{
-			//puts("bind failed");
+			// puts("bind failed");
 			port++;
-			//cout << port << endl;
-			// return 1;
+			// cout << port << endl;
+			//  return 1;
 			continue;
 		}
 
@@ -146,12 +146,23 @@ void *connection_handler(void *socket_desc)
 	message = "Greetings! I am your connection handler. Use -h or --help for help or -q for exi\n";
 	write(sock, message, strlen(message));
 
-	while (message != "-q")
+	while (client_message != "-q")
 	{
 		// Receive a message from client
 		// cout << message << endl;
 		read_size = recv(sock, client_message, 15000, 0);
-
+		if (read_size == 0)
+		{
+			puts("Client disconnected");
+			fflush(stdout);
+			exit(EXIT_FAILURE);
+		}
+		else if (read_size == -1)
+		{
+			perror("recv failed");
+			fflush(stdout);
+			exit(EXIT_FAILURE);
+		}
 		message = start(client_message);
 		memset(client_message, 0, sizeof(client_message));
 
@@ -159,24 +170,12 @@ void *connection_handler(void *socket_desc)
 		cout << endl;
 	}
 
-	if (read_size == 0)
-	{
-		puts("Client disconnected");
-		fflush(stdout);
-		exit(EXIT_FAILURE);
-	}
-	else if (read_size == -1)
-	{
-		perror("recv failed");
-		fflush(stdout);
-		exit(EXIT_FAILURE);
-	}
-	if (message == "-q")
-	{
-		puts("client is over");
-		fflush(stdout);
-		exit(EXIT_FAILURE);
-	}
+	// if (message == "-q")
+	// {
+	// 	puts("client is over");
+	// 	fflush(stdout);
+	// 	exit(EXIT_FAILURE);
+	// }
 	// Free the socket pointer
 	free(socket_desc);
 

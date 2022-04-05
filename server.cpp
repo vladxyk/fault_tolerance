@@ -45,56 +45,50 @@ int main(int argc, char *argv[])
 		server.sin_family = AF_INET;
 		server.sin_addr.s_addr = INADDR_ANY;
 		server.sin_port = htons(port);
-		// cout << port << endl;
+
 		// Bind
 		if (bind(socket_desc, (struct sockaddr *)&server, sizeof(server)) < 0)
 		{
 			// puts("bind failed");
 			port++;
-			// cout << port << endl;
-			//  return 1;
 			continue;
 		}
 
 		puts("bind done");
 		cout << port << endl;
-		// serv[i] = serv;
+
 		// Listen
 		listen(socket_desc, 3);
 
 		// Accept and incoming connection
 		puts("Waiting for incoming connections...");
-		/*if(*/ /*== 0){
-			port++;
-			//continue;
-		}*/
-				/*
-					int optval;
-					socklen_t optlen = sizeof(optval);
-					if(getsockopt(socket_desc, SOL_SOCKET, SO_KEEPALIVE, &optval, &optlen) < 0) {
-					  perror("getsockopt()");
-					  close(socket_desc);
-					  exit(EXIT_FAILURE);
-				   }
-				   printf("SO_KEEPALIVE is %s\n", (optval ? "ON" : "OFF"));
-		
-					optval = 1;
-				   optlen = sizeof(optval);
-				   if(setsockopt(socket_desc, SOL_SOCKET, SO_KEEPALIVE, &optval, optlen) < 0) {
-					  perror("setsockopt()");
-					  close(socket_desc);
-					  exit(EXIT_FAILURE);
-				   }
-				   printf("SO_KEEPALIVE set on socket\n");
-		
-		
-				   if(getsockopt(socket_desc, SOL_SOCKET, SO_KEEPALIVE, &optval, &optlen) < 0) {
-					  perror("getsockopt()");
-					  close(socket_desc);
-					  exit(EXIT_FAILURE);
-				   }
-				   printf("SO_KEEPALIVE is %s\n", (optval ? "ON" : "OFF"));
-				*/
+		/*
+			int optval;
+			socklen_t optlen = sizeof(optval);
+			if(getsockopt(socket_desc, SOL_SOCKET, SO_KEEPALIVE, &optval, &optlen) < 0) {
+			  perror("getsockopt()");
+			  close(socket_desc);
+			  exit(EXIT_FAILURE);
+		   }
+		   printf("SO_KEEPALIVE is %s\n", (optval ? "ON" : "OFF"));
+
+			optval = 1;
+		   optlen = sizeof(optval);
+		   if(setsockopt(socket_desc, SOL_SOCKET, SO_KEEPALIVE, &optval, optlen) < 0) {
+			  perror("setsockopt()");
+			  close(socket_desc);
+			  exit(EXIT_FAILURE);
+		   }
+		   printf("SO_KEEPALIVE set on socket\n");
+
+
+		   if(getsockopt(socket_desc, SOL_SOCKET, SO_KEEPALIVE, &optval, &optlen) < 0) {
+			  perror("getsockopt()");
+			  close(socket_desc);
+			  exit(EXIT_FAILURE);
+		   }
+		   printf("SO_KEEPALIVE is %s\n", (optval ? "ON" : "OFF"));
+		*/
 
 		c = sizeof(struct sockaddr_in);
 		while ((new_socket = accept(socket_desc, (struct sockaddr *)&client, (socklen_t *)&c)))
@@ -168,14 +162,7 @@ void *connection_handler(void *socket_desc)
 		write(sock, message, strlen(message));
 		cout << endl;
 	}
-
-	// if (message == "-q")
-	// {
-	// 	puts("client is over");
-	// 	fflush(stdout);
-	// 	exit(EXIT_FAILURE);
-	// }
-	// Free the socket pointer
+	
 	free(socket_desc);
 
 	return 0;

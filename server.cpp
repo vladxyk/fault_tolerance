@@ -25,14 +25,13 @@ void *connection_handler(void *);
 
 int main(int argc, char *argv[])
 {
-
-	int socket_desc, new_socket, c;
-	const char *message;
-	int *new_sock = new int;
 	int port = 8000;
 
 	while (1)
 	{
+		int socket_desc, new_socket, c;
+		const char *message;
+		int *new_sock = new int;
 		// Create socket
 		socket_desc = socket(AF_INET, SOCK_STREAM, 0);
 		if (socket_desc == -1)
@@ -104,7 +103,7 @@ int main(int argc, char *argv[])
 			puts("Connection accepted");
 
 			// Reply to the client
-			message = "Hello Client , I have received your connection. And now I will assign a handler for you\n";
+			message = "Hello Client, I have received your connection. And now I will assign a handler for you\n";
 			write(new_socket, message, strlen(message));
 
 			pthread_t sniffer_thread;
@@ -138,19 +137,19 @@ void *connection_handler(void *socket_desc)
 	// Get the socket descriptor
 	int sock = *(int *)socket_desc;
 	int read_size;
-	char client_message[15000];
+	char client_message[2000];
 	const char *message;
 	char *m;
 
 	// Send some messages to the client
-	message = "Greetings! I am your connection handler. Use -h or --help for help or -q for exi\n";
+	message = "Greetings! I am your connection handler. Use -h or --help for help or -q for exit\n";
 	write(sock, message, strlen(message));
 
 	while (client_message != "-q")
 	{
 		// Receive a message from client
 		// cout << message << endl;
-		read_size = recv(sock, client_message, 15000, 0);
+		read_size = recv(sock, client_message, 2000, 0);
 		if (read_size == 0)
 		{
 			puts("Client disconnected");

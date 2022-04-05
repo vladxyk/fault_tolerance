@@ -8,78 +8,64 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    int socket_desc;
-    struct sockaddr_in server;
-    char *message, server_reply[2000], server_reply2[2000], server_reply3[15000];
     int port = 8000;
-    int k = 0;
-    char buff[15000];
+    bool tmp = true;
+    char buff[2000];
     while (1)
     {
-        // Create socket
+        int socket_desc;
+        struct sockaddr_in server;
+        char *message, server_reply[100], server_reply2[100], server_reply3[2000];
+
         socket_desc = socket(AF_INET, SOCK_STREAM, 0);
         if (socket_desc == -1)
         {
             cout << "Could not create socket\n";
             exit(EXIT_FAILURE);
         }
-        // struct sockaddr_in server;
+
         server.sin_addr.s_addr = INADDR_ANY;
         server.sin_family = AF_INET;
         server.sin_port = htons(port);
 
-        // Connect to remote server
-        // cout << port << endl;
         if (connect(socket_desc, (struct sockaddr *)&server, sizeof(server)) == -1)
         {
             // puts("connect error");
             port++;
             continue;
         }
-        // cout << flush;
-        if (k == 0)
+
+        if (tmp)
         {
-            // puts("Connected");
             cout << "Connected: " << port << endl;
         }
-        // cout << port << endl;
-        // cout << "k = " << k << endl << endl;
-        // cout << flush;
-        if ((recv(socket_desc, server_reply, 2000, 0)) == -1)
+
+        if ((recv(socket_desc, server_reply, 100, 0)) == -1)
         {
-            cout << "recv1 failed" << endl;
+           cout << "recv1 failed" << endl;
         }
-        // cout << "k = " << k << endl << endl;
-        // cout << flush;
-        if (k == 0)
+        if (tmp)
         {
-            cout << "Reply received\n"
-                 << server_reply << endl;
+            cout << server_reply << endl;
         }
-        // cout << "k = " << k << endl << endl;
-        // cout << flush;
-        if ((recv(socket_desc, server_reply2, 2000, 0)) == -1)
+        
+        if ((recv(socket_desc, server_reply2, 100, 0)) == -1)
         {
             cout << "recv2 failed" << endl;
         }
-        // cout << "k = " << k << endl << endl;
-        // cout << flush;
-        if (k == 0)
+        if (tmp)
         {
-            cout << "Reply2 received\n"
-                 << server_reply2 << endl;
+            cout << server_reply2 << endl;
         }
-        // cout << flush;
-        // cout << "k = " << k << endl
-        //      << endl;
+
         while (1)
         {
             int i = 0;
-            if (k == 0)
+            if (tmp)
             {
                 do
                 {
-                    buff[15000] = {0};
+                    buff[2000] = {0};
                     buff[i] = getchar();
                     // cout << buff[i];
                     if (buff[i] == '\n')
@@ -92,7 +78,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                k = 0;
+                tmp = true;
             }
 
             message = buff;
@@ -106,16 +92,16 @@ int main(int argc, char *argv[])
             {
                 cout << "Send failed" << endl;
                 port++;
-                k++;
+                tmp = false;
                 break;
             }
 
-            if ((recv(socket_desc, server_reply3, 15000, 0) <= 0))
+            if ((recv(socket_desc, server_reply3, 2000, 0) <= 0))
             {
                 // puts("recv3 failed");
                 // cout << endl;
                 port++;
-                k++;
+                tmp = false;
                 break;
             }
             // cout << "k2 = " << k << endl;
@@ -128,7 +114,6 @@ int main(int argc, char *argv[])
 
             if ((strcmp(message, "-q")) == 0)
             {
-                // puts("Do svidaniya! do widzenia!");
                 fflush(stdout);
                 exit(EXIT_FAILURE);
             }

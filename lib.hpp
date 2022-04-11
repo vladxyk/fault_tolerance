@@ -7,5 +7,6 @@ char *showp();
 int copyFile(const char *copyfromfile, const char *copytofile);
 int showsize(std::string filesize);
 const char *start(char* client_message);
+int servak();
 
 #endif 

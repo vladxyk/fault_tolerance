@@ -1,4 +1,4 @@
-all: client server
+all: client server 
 
 client: client.o liblab.so mainlab.so
 	g++ -o client client.o -L. -llab -Wl,-rpath,.
@@ -25,4 +25,7 @@ main.o: main.cpp
 	g++ -c -fPIC main.cpp
 	
 clean:
+	rm -f *.o *.so 
+
+clear:
 	rm -f *.o *.so server client
